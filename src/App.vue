@@ -1,22 +1,28 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <h3 class="text-center text-2xl mb-2 font-bold mt-10">gnvs</h3>
+  <div class="text-center">
+    <button
+      class="bg-light-300 py-2 px-2 border rounded border-light-800"
+      @click="handleAuthButtonClick"
+    >
+      Continue with GitHub
+    </button>
+  </div>
 </template>
 
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-// This starter template is using Vue 3 experimental <script setup> SFCs
-// Check out https://github.com/vuejs/rfcs/blob/script-setup-2/active-rfcs/0000-script-setup.md
+export default defineComponent({
+  setup() {
+    const handleAuthButtonClick = () => {
+      // eslint-disable-next-line no-alert
+      alert('not implemented')
+    }
+
+    return {
+      handleAuthButtonClick,
+    }
+  },
+})
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
