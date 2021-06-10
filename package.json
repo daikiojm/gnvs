@@ -7,6 +7,7 @@
     "lint": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore ."
   },
   "dependencies": {
+    "fastify": "^3.17.0",
     "vue": "^3.0.5"
   },
   "devDependencies": {
