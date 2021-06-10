@@ -12,3 +12,12 @@ $ yarn dev
 # build for production
 $ yarn build
 ```
+
+## Directory description
+
+- api
+  - place the serverless functions for vercel
+- lib
+  - place the api core logic
+- src/composables
+  - place the use case layer
