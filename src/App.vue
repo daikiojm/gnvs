@@ -15,15 +15,17 @@
 import { defineComponent } from 'vue'
 
 import GithubIcon from './components/GithubIcon.vue'
+import { useGithubAuth } from './composables/useGithubAuth'
 
 export default defineComponent({
   components: {
     GithubIcon,
   },
   setup() {
+    const { openGithubAuthLink } = useGithubAuth()
+
     const handleAuthButtonClick = () => {
-      // eslint-disable-next-line no-alert
-      alert('not implemented')
+      openGithubAuthLink()
     }
 
     return {
