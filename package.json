@@ -7,9 +7,8 @@
     "lint": "eslint --ext \".js,.ts,.vue\" --ignore-path .gitignore ."
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "fastify": "^3.17.0",
-    "ky": "^0.28.5",
-    "ky-universal": "^0.9.1",
     "vue": "^3.0.5",
     "vue-router": "^4.0.8"
   },
