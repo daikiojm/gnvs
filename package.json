@@ -9,6 +9,7 @@
   "dependencies": {
     "fastify": "^3.17.0",
     "ky": "^0.28.5",
+    "ky-universal": "^0.9.1",
     "vue": "^3.0.5",
     "vue-router": "^4.0.8"
   },

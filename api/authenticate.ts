@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
-import ky from 'ky'
+import ky from 'ky-universal'
 
 const githubOauthAccessTokenUrl = 'https://github.com/login/oauth/access_token'
 
