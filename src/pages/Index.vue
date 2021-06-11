@@ -12,11 +12,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue'
+import { computed, defineComponent, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
-import GithubIcon from '../components/GithubIcon.vue'
-import { useGithubAuth } from '../composables/useGithubAuth'
+import GithubIcon from '~/components/GithubIcon.vue'
+import { useGithubAuth } from '~/composables/useGithubAuth'
+import { useLogger } from '~/composables/useLogger'
 
 export default defineComponent({
   components: {
@@ -24,15 +25,22 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
+    const logger = useLogger()
+    const codeFromQuery = computed<string>(
+      () => (route.query as { code: string }).code
+    )
     const { openGithubAuthLink } = useGithubAuth()
 
     const handleAuthButtonClick = () => {
       openGithubAuthLink()
     }
 
+    watch(codeFromQuery, () => {
+      logger.info('codeFromQuery')
+    })
+
     onMounted(() => {
-      // eslint-disable-next-line no-console
-      console.log(route.query)
+      logger.info(route.query)
     })
 
     return {
