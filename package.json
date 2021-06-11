@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "fastify": "^3.17.0",
-    "vue": "^3.0.5"
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.8"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.6.5",
