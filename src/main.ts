@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import App from './App.vue'
 
-import Index from './pages/_Index.vue'
+import Index from './pages/Index.vue'
 
 import 'virtual:windi.css'
 
