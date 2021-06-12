@@ -35,7 +35,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     serverErrorResponse(response)
   }
 
-  const { code = '' } = request.body as AuthenticateRequest
+  const { code = '' } = request.query as AuthenticateRequest
 
   if (!code) {
     requestErrorResponse(response)
