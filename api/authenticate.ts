@@ -66,7 +66,8 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     console.log(e)
     // eslint-disable-next-line no-console
     console.log(JSON.stringify(e))
-    serverErrorResponse(response)
+    throw e
+    // serverErrorResponse(response)
   }
 }
 
