@@ -52,6 +52,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         body,
       }
     )
+    // eslint-disable-next-line no-console
     console.info(accessTokenResponse)
     successResponse<AuthenticateResponse>(
       response,
@@ -60,6 +61,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e)
+    // eslint-disable-next-line no-console
     console.error(JSON.stringify(e))
     serverErrorResponse(response)
   }
