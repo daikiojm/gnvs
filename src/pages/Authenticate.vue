@@ -10,11 +10,10 @@
 
 <script lang="ts">
 import { computed, defineComponent, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import GithubIcon from '~/components/GithubIcon.vue'
 import { useAuth } from '~/composables/useAuth'
-import { useLogger } from '~/composables/useLogger'
 
 export default defineComponent({
   components: {
@@ -22,7 +21,7 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute()
-    const logger = useLogger()
+    const router = useRouter()
     const codeFromQuery = computed<string>(
       () => (route.query as { code: string }).code
     )
@@ -32,13 +31,14 @@ export default defineComponent({
 
     onMounted(async () => {
       const code = codeFromQuery.value
-      logger.info('code', code)
       if (!code) {
         return
       }
 
-      const accessToken = await authenticate(code)
-      logger.info('accessToken', accessToken)
+      const token = await authenticate(code)
+      if (token) {
+        router.push('/')
+      }
     })
 
     return {

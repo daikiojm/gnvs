@@ -31,6 +31,7 @@ export function useAuth() {
 
     const token = authenticateResponse.data.accessToken
     storedToken.value = token
+    return token
   }
 
   const isAuthenticated = () => !!storedToken.value
