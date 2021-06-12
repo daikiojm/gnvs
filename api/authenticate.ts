@@ -48,27 +48,40 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     redirect_url: redirectUrl,
   }
 
-  try {
-    const accessTokenResponse = await axios.post<string>(
-      githubOauthAccessTokenUrl,
-      {
-        body,
-      }
-    )
-    // eslint-disable-next-line no-console
-    console.log(accessTokenResponse)
-    successResponse<AuthenticateResponse>(
-      response,
-      buildResponse(accessTokenResponse)
-    )
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log(e)
-    // eslint-disable-next-line no-console
-    console.log(JSON.stringify(e))
-    throw e
-    // serverErrorResponse(response)
-  }
+  const accessTokenResponse = await axios.post<string>(
+    githubOauthAccessTokenUrl,
+    {
+      body,
+    }
+  )
+  // eslint-disable-next-line no-console
+  console.log(accessTokenResponse)
+  successResponse<AuthenticateResponse>(
+    response,
+    buildResponse(accessTokenResponse)
+  )
+
+  // try {
+  //   const accessTokenResponse = await axios.post<string>(
+  //     githubOauthAccessTokenUrl,
+  //     {
+  //       body,
+  //     }
+  //   )
+  //   // eslint-disable-next-line no-console
+  //   console.log(accessTokenResponse)
+  //   successResponse<AuthenticateResponse>(
+  //     response,
+  //     buildResponse(accessTokenResponse)
+  //   )
+  // } catch (e) {
+  //   // eslint-disable-next-line no-console
+  //   console.log(e)
+  //   // eslint-disable-next-line no-console
+  //   console.log(JSON.stringify(e))
+  //   throw e
+  //   // serverErrorResponse(response)
+  // }
 }
 
 function serverErrorResponse(res: VercelResponse) {
