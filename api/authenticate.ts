@@ -39,43 +39,25 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     requestErrorResponse(response)
   }
 
-  const formdata = buildFormData(clientId, clientSecret, redirectUrl, code)
-  const accessTokenResponse = await axios.post<string>(
-    githubOauthAccessTokenUrl,
-    formdata,
-    {
-      headers: {
-        'content-type': 'multipart/form-data',
-        ...formdata.getHeaders(),
-      },
-    }
-  )
-  successResponse<AuthenticateResponse>(
-    response,
-    buildResponse(accessTokenResponse)
-  )
-
-  // try {
-  //   const accessTokenResponse = await axios.post<string>(
-  //     githubOauthAccessTokenUrl,
-  //     {
-  //       body,
-  //     }
-  //   )
-  //   // eslint-disable-next-line no-console
-  //   console.log(accessTokenResponse)
-  //   successResponse<AuthenticateResponse>(
-  //     response,
-  //     buildResponse(accessTokenResponse)
-  //   )
-  // } catch (e) {
-  //   // eslint-disable-next-line no-console
-  //   console.log(e)
-  //   // eslint-disable-next-line no-console
-  //   console.log(JSON.stringify(e))
-  //   throw e
-  //   // serverErrorResponse(response)
-  // }
+  try {
+    const formdata = buildFormData(clientId, clientSecret, redirectUrl, code)
+    const accessTokenResponse = await axios.post<string>(
+      githubOauthAccessTokenUrl,
+      formdata,
+      {
+        headers: {
+          'content-type': 'multipart/form-data',
+          ...formdata.getHeaders(),
+        },
+      }
+    )
+    successResponse<AuthenticateResponse>(
+      response,
+      buildResponse(accessTokenResponse)
+    )
+  } catch {
+    serverErrorResponse(response)
+  }
 }
 
 function serverErrorResponse(res: VercelResponse) {
@@ -121,9 +103,11 @@ function buildResponse(
 ): AuthenticateResponse {
   const { data: paramsString } = accessTokenResponse
   const params = new URLSearchParams(paramsString)
+
+  const error = params.get('error')
   const accessToken = params.get('access_token')
   if (!accessToken) {
-    throw new Error('access_token not found')
+    throw new Error(error || 'access_token not found')
   }
 
   return {
