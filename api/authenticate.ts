@@ -52,7 +52,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       response,
       buildResponse(accessTokenResponse)
     )
-  } catch {
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.error(e)
     serverErrorResponse(response)
   }
 }
