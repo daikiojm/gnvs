@@ -2,25 +2,14 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import axios, { AxiosResponse } from 'axios'
 import FormData from 'form-data'
 
-const githubOauthAccessTokenUrl = 'https://github.com/login/oauth/access_token'
+import { Env, AuthenticateResponse, AuthenticateRequest } from '../lib/types'
+import {
+  serverErrorResponse,
+  requestErrorResponse,
+  successResponse,
+} from '../lib/apiHelpter'
 
-type Env = {
-  GITHUB_OAUTH_CLIENT_ID: string
-  GITHUB_OAUTH_CLIENT_SECRET: string
-  GITHUB_OAUTH_REDIRECT_URI: string
-}
-
-type ErrorResponse = {
-  message: string
-}
-
-type AuthenticateRequest = {
-  code: string
-}
-
-type AuthenticateResponse = {
-  accessToken: string
-}
+const githubOAuthAccessTokenUrl = 'https://github.com/login/oauth/access_token'
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   const {
@@ -30,19 +19,19 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   } = process.env as Env
 
   if (!clientId || !clientSecret || !redirectUrl) {
-    serverErrorResponse(response)
+    return serverErrorResponse(response)
   }
 
   const { code = '' } = request.query as AuthenticateRequest
 
   if (!code) {
-    requestErrorResponse(response)
+    return requestErrorResponse(response)
   }
 
   try {
     const formdata = buildFormData(clientId, clientSecret, redirectUrl, code)
     const accessTokenResponse = await axios.post<string>(
-      githubOauthAccessTokenUrl,
+      githubOAuthAccessTokenUrl,
       formdata,
       {
         headers: {
@@ -51,25 +40,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         },
       }
     )
-    successResponse<AuthenticateResponse>(
+    return successResponse<AuthenticateResponse>(
       response,
       buildResponse(accessTokenResponse)
     )
   } catch {
-    serverErrorResponse(response)
+    return serverErrorResponse(response)
   }
-}
-
-function serverErrorResponse(res: VercelResponse) {
-  res.status(500).json(buildErrorResponse('Server error'))
-}
-
-function requestErrorResponse(res: VercelResponse) {
-  res.status(400).json(buildErrorResponse('Request error'))
-}
-
-function successResponse<R = any>(res: VercelResponse, body: R) {
-  res.status(200).json(body)
 }
 
 function buildFormData(
@@ -90,12 +67,6 @@ function buildFormData(
   })
 
   return formData
-}
-
-function buildErrorResponse(message: string): ErrorResponse {
-  return {
-    message,
-  }
 }
 
 function buildResponse(
