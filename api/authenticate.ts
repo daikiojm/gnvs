@@ -9,6 +9,10 @@ type Env = {
   GITHUB_OAUTH_REDIRECT_URI: string
 }
 
+type ErrorResponse = {
+  message: string
+}
+
 type AuthenticateRequest = {
   code: string
 }
@@ -48,6 +52,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         body,
       }
     )
+    console.info(accessTokenResponse)
     successResponse<AuthenticateResponse>(
       response,
       buildResponse(accessTokenResponse)
@@ -55,20 +60,27 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error(e)
+    console.error(JSON.stringify(e))
     serverErrorResponse(response)
   }
 }
 
 function serverErrorResponse(res: VercelResponse) {
-  res.status(500).send('Server error')
+  res.status(500).json(buildErrorResponse('Server error'))
 }
 
 function requestErrorResponse(res: VercelResponse) {
-  res.status(400).send('Request error')
+  res.status(400).json(buildErrorResponse('Request error'))
 }
 
 function successResponse<R = any>(res: VercelResponse, body: R) {
   res.status(200).json(body)
+}
+
+function buildErrorResponse(message: string): ErrorResponse {
+  return {
+    message,
+  }
 }
 
 function buildResponse(
