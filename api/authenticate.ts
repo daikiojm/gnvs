@@ -28,6 +28,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     GITHUB_OAUTH_REDIRECT_URI: redirectUrl,
   } = process.env as Env
 
+  // eslint-disable-next-line no-console
+  console.log('env', clientId, clientSecret, redirectUrl)
+
   if (!clientId || !clientSecret || !redirectUrl) {
     serverErrorResponse(response)
   }
@@ -53,16 +56,16 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
     )
     // eslint-disable-next-line no-console
-    console.info(accessTokenResponse)
+    console.log(accessTokenResponse)
     successResponse<AuthenticateResponse>(
       response,
       buildResponse(accessTokenResponse)
     )
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.error(e)
+    console.log(e)
     // eslint-disable-next-line no-console
-    console.error(JSON.stringify(e))
+    console.log(JSON.stringify(e))
     serverErrorResponse(response)
   }
 }
