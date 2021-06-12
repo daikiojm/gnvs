@@ -519,6 +519,21 @@
   resolved "https://registry.yarnpkg.com/@vue/shared/-/shared-3.1.1.tgz#2287cfc3dc20e5b20aeb65c2c3a56533bdca801c"
   integrity sha512-g+4pzAw7PYSjARtLBoDq6DmcblX8i9KJHSCnyM5VDDFFifUaUT9iHbFpOF/KOizQ9f7QAqU2JH3Y6aXjzUMhVA==
 
+"@vueuse/core@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-5.0.2.tgz#302389f620c0d4b51fdf157012d9b5b522b605e7"
+  integrity sha512-Sp9+7AL4Cg3Tx6I55WoH7zICGRlp6ZUF9NW3EU8SZTkryHm0afAjFfASMwlfV030JFeh45BdqafDOrenVmM9Cw==
+  dependencies:
+    "@vueuse/shared" "5.0.2"
+    vue-demi "*"
+
+"@vueuse/shared@5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-5.0.2.tgz#274c2bf163d25eb7fd2fc51f23088a2b7f060594"
+  integrity sha512-S1hRRmEdipjTD4DbXgPdw4ZZYebU/nDi75vNP3Ibpa1irW3NUNUKOT/TWnwRHLQvXquUtdvalhI8D9Db+czZJg==
+  dependencies:
+    vue-demi "*"
+
 "@windicss/plugin-utils@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@windicss/plugin-utils/-/plugin-utils-1.0.3.tgz#04d039ef56b58180079df3f9b3bd8a21a57368d3"
@@ -3175,6 +3190,11 @@ vite@^2.3.7:
     rollup "^2.38.5"
   optionalDependencies:
     fsevents "~2.3.1"
+
+vue-demi@*:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/vue-demi/-/vue-demi-0.9.1.tgz#25d6e1ebd4d4010757ff3571e2bf6a1d7bf3de82"
+  integrity sha512-7s1lufRD2l369eFWPjgLvhqCRk0XzGWJsQc7K4q+0mZtixyGIvsK1Cg88P4NcaRIEiBuuN4q1NN4SZKFKwQswA==
 
 vue-eslint-parser@^7.6.0:
   version "7.6.0"
