@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import axios, { AxiosResponse } from 'axios'
+import FormData from 'form-data'
 
 const githubOauthAccessTokenUrl = 'https://github.com/login/oauth/access_token'
 
@@ -28,9 +29,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     GITHUB_OAUTH_REDIRECT_URI: redirectUrl,
   } = process.env as Env
 
-  // eslint-disable-next-line no-console
-  console.log('env', clientId, clientSecret, redirectUrl)
-
   if (!clientId || !clientSecret || !redirectUrl) {
     serverErrorResponse(response)
   }
@@ -41,21 +39,12 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     requestErrorResponse(response)
   }
 
-  const body = {
-    client_id: clientId,
-    client_secret: clientSecret,
-    code,
-    redirect_url: redirectUrl,
-  }
-
   const accessTokenResponse = await axios.post<string>(
     githubOauthAccessTokenUrl,
     {
-      body,
+      body: buildFormData(clientId, clientSecret, redirectUrl, code),
     }
   )
-  // eslint-disable-next-line no-console
-  console.log(accessTokenResponse)
   successResponse<AuthenticateResponse>(
     response,
     buildResponse(accessTokenResponse)
@@ -94,6 +83,26 @@ function requestErrorResponse(res: VercelResponse) {
 
 function successResponse<R = any>(res: VercelResponse, body: R) {
   res.status(200).json(body)
+}
+
+function buildFormData(
+  clientId: string,
+  clientSecret: string,
+  redirectUrl: string,
+  code: string
+): FormData {
+  const params = {
+    client_id: clientId,
+    client_secret: clientSecret,
+    code,
+    redirect_url: redirectUrl,
+  }
+  const formData = new FormData()
+  Object.entries(params).forEach(([key, value]) => {
+    formData.append(key, value)
+  })
+
+  return formData
 }
 
 function buildErrorResponse(message: string): ErrorResponse {
