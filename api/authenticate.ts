@@ -1,5 +1,6 @@
 import { VercelRequest, VercelResponse } from '@vercel/node'
 import axios from 'axios'
+import FormData from 'form-data'
 
 const githubOauthAccessTokenUrl = 'https://github.com/login/oauth/access_token'
 
