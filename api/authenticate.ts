@@ -14,11 +14,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     GITHUB_OAUTH_CLIENT_SECRET: string
     GITHUB_OAUTH_REDIRECT_URI: string
   }
+
   if (!clientId || !clientSecret || !redirectUrl) {
     serverErrorResponse(response)
   }
 
   const { code = '' } = request.body as { code: string }
+
   if (!code) {
     requestErrorResponse(response)
   }
