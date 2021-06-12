@@ -39,12 +39,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     requestErrorResponse(response)
   }
 
+  const formdata = buildFormData(clientId, clientSecret, redirectUrl, code)
   const accessTokenResponse = await axios.post<string>(
     githubOauthAccessTokenUrl,
-    buildFormData(clientId, clientSecret, redirectUrl, code),
+    formdata,
     {
       headers: {
         'content-type': 'multipart/form-data',
+        ...formdata.getHeaders(),
       },
     }
   )
