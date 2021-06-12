@@ -13,7 +13,7 @@ import { computed, defineComponent, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 import GithubIcon from '~/components/GithubIcon.vue'
-import { useGithubAuth } from '~/composables/useGithubAuth'
+import { useAuth } from '~/composables/useAuth'
 import { useLogger } from '~/composables/useLogger'
 
 export default defineComponent({
@@ -26,11 +26,9 @@ export default defineComponent({
     const codeFromQuery = computed<string>(
       () => (route.query as { code: string }).code
     )
-    const { openGithubAuthLink, authenticate } = useGithubAuth()
+    const { authorize, authenticate } = useAuth()
 
-    const handleAuthButtonClick = () => {
-      openGithubAuthLink()
-    }
+    const handleAuthButtonClick = () => authorize()
 
     onMounted(async () => {
       const code = codeFromQuery.value
