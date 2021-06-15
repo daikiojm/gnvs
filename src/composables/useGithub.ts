@@ -30,8 +30,8 @@ export function useGithub() {
 
   const counts = computed<SearchResult>(() => {
     return {
-      countA: state.resultRaws[0].total_count,
-      countB: state.resultRaws[1].total_count,
+      countA: state.resultRaws.length > 0 ? state.resultRaws[0].total_count : 0,
+      countB: state.resultRaws.length > 1 ? state.resultRaws[1].total_count : 0,
     }
   })
 
