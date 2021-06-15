@@ -72,38 +72,32 @@
         Search
       </button>
     </div>
-    <p class="mt-10 mx-auto">{{ result }}</p>
+    <p class="mt-10 mx-auto">{{ counts }}</p>
+    <p class="mt-10 mx-auto">{{ resultRaws }}</p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue'
+import { defineComponent, ref } from 'vue'
 
-import { useGithub, SearchResult } from '~/composables/useGithub'
-import { useLogger } from '~/composables/useLogger'
+import { useGithub } from '~/composables/useGithub'
 
 export default defineComponent({
   setup() {
     const nameA = ref<string>('')
     const nameB = ref<string>('')
-    const result = reactive<SearchResult>({
-      countA: 0,
-      countB: 0,
-    })
-    const logger = useLogger()
-    const { search } = useGithub()
+
+    const { search, counts, resultRaws } = useGithub()
 
     const handleSubmit = async () => {
-      const response = await search(nameA.value, nameB.value)
-      result.countA = response.countA
-      result.countB = response.countB
-      logger.info(response)
+      await search(nameA.value, nameB.value)
     }
 
     return {
       nameA,
       nameB,
-      result,
+      counts,
+      resultRaws,
       handleSubmit,
     }
   },
