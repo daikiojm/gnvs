@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { reactive, computed } from 'vue'
 import type { RestEndpointMethodTypes } from '@octokit/plugin-rest-endpoint-methods'
-import { toRefs, useLocalStorage } from '@vueuse/core'
+import { get, toRefs, useLocalStorage } from '@vueuse/core'
 
 const githubApiBasePath = 'https://api.github.com'
 
@@ -17,21 +17,24 @@ export type SearchResult = {
 
 type State = {
   searchLoading: boolean
-  resultRaws: SearchResponse['data'][]
+  resultRows: SearchResponse['data'][]
 }
 
 export function useGithub() {
-  const storedToken = useLocalStorage<string>(accessTokenLocalStorageKey, null)
+  const storedToken = useLocalStorage<string | null>(
+    accessTokenLocalStorageKey,
+    null
+  )
 
   const state = reactive<State>({
     searchLoading: false,
-    resultRaws: [],
+    resultRows: [],
   })
 
   const counts = computed<SearchResult>(() => {
     return {
-      countA: state.resultRaws.length > 0 ? state.resultRaws[0].total_count : 0,
-      countB: state.resultRaws.length > 1 ? state.resultRaws[1].total_count : 0,
+      countA: state.resultRows.length > 0 ? state.resultRows[0].total_count : 0,
+      countB: state.resultRows.length > 0 ? state.resultRows[1].total_count : 0,
     }
   })
 
@@ -39,18 +42,22 @@ export function useGithub() {
     params: SearchParameters
   ): Promise<SearchResponse['data']> => {
     const path = `${githubApiBasePath}/search/code`
-    const { data } = await axios.get<SearchResponse['data']>(path, {
-      headers: {
-        Authorization: `token ${storedToken.value}`,
-        accept: 'application/vnd.github.v3+json',
-      },
-      params: {
-        ...params,
-        q: encodeURIComponent(params.q),
-      },
-    })
+    try {
+      const { data } = await axios.get<SearchResponse['data']>(path, {
+        headers: {
+          Authorization: `token ${get(storedToken)}`,
+          accept: 'application/vnd.github.v3+json',
+        },
+        params: {
+          ...params,
+          q: encodeURIComponent(params.q),
+        },
+      })
 
-    return data
+      return data
+    } catch {
+      return [] as unknown as SearchResponse['data']
+    }
   }
 
   const search = async (wordA: string, wordB: string): Promise<void> => {
@@ -61,7 +68,7 @@ export function useGithub() {
         searchCode({ q: wordB, per_page: 10 }),
       ])
 
-      state.resultRaws = [resultA, resultB]
+      state.resultRows = [resultA, resultB]
     } finally {
       state.searchLoading = false
     }

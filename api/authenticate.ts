@@ -40,6 +40,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         },
       }
     )
+
     return successResponse<AuthenticateResponse>(
       response,
       buildResponse(accessTokenResponse)
@@ -62,6 +63,7 @@ function buildFormData(
     redirect_url: redirectUrl,
   }
   const formData = new FormData()
+
   Object.entries(params).forEach(([key, value]) => {
     formData.append(key, value)
   })

@@ -11,7 +11,10 @@ const authorizeLink = (clientId: string, redirectUri: string) =>
 const authenticatePath = '/api/authenticate'
 
 export function useAuth() {
-  const storedToken = useLocalStorage(accessTokenLocalStorageKey, null)
+  const storedToken = useLocalStorage<string | null>(
+    accessTokenLocalStorageKey,
+    null
+  )
 
   const authorize = () => {
     const {
